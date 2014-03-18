@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/melmerp/pangako",
   "dependencies": {
-    "asap": "~1.0.0",
+    "asap": "~1.0.0"
+  },
+  "devDependencies": {
     "promises-aplus-tests": "~2.0.4"
   }
 }
