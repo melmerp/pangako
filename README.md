@@ -1,4 +1,4 @@
 pangako
 =======
 
-A barebones Javascript Promises/A+ implementation.
+A bare bones Javascript Promises/A+ implementation.
