@@ -29,7 +29,7 @@ deferred.promise.then(function(value) {
 });
 </code></pre>
 
-### Using pangako.promise
+### Using pangako.Promise
 
 <pre><code>
 const Promise = require('pangako').Promise;
