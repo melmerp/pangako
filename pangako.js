@@ -5,6 +5,15 @@
 
 const asap = require('asap');
 
+/**
+ * Creates a deferred object which has three fields:
+ * {
+ *   promise: a Promise object,
+ *   resolve: function(value) which resolves the promise with value
+ *   reject: function(reason) which rejects the promise with reason
+ * }
+ * @returns {Object} the deferred object
+ */
 function defer() {
   var deferred = {};
 
@@ -24,6 +33,12 @@ const PromiseState = Object.freeze({
   REJECTED: 'rejected'
 });
 
+/**
+ * Constructs a Promise object. The promise should be settled by the work
+ * callback which will call either resolve or reject to settle the promise.
+ * @param {function} work function(resolve, reject)
+ * @constructor
+ */
 function Promise(work) {
   this.state = PromiseState.PENDING;
 
@@ -43,6 +58,26 @@ function Promise(work) {
 Promise.prototype = {
   constructor: Promise,
 
+  /**
+   * Registers callbacks that will get called when a promise is settled.
+   * If the promise is resolved, the onFulfilled callback will get executed
+   * with value as its lone argument. If a promise is rejected, the
+   * onRejected callback will get executed with reason as its lone argument.
+   * onFulfilled and onRejected should return either a value or a another
+   * thenable.
+   *
+   * Returns a promise:
+   *   1. If the executed callback returns a thenable, this method returns
+   *      a Promise object representing that thenable.
+   *   2. If the executed callback returns a value, this method returns a
+   *      Promise that is resolved with the value.
+   *   3. If the executed callback throws an exception, this method returns
+   *      a Promise that is rejected with the exception as the reason.
+   *
+   * @param onFulfilled - function(value)
+   * @param onRejected - function(reason)
+   * @returns {Promise} promise
+   */
   then: function(onFulfilled, onRejected) {
     if (this.state === PromiseState.PENDING) {
 
