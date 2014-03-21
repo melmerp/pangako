@@ -27,7 +27,7 @@ setTimeout(function() {
 deferred.promise.then(function(value) {
   console.log(value);
 });
-</code</pre>
+</code></pre>
 
 ### Using pangako.promise
 
