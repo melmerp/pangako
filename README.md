@@ -4,6 +4,12 @@ A bare bones [Javascript Promises/A+ spec](https://github.com/promises-aplus/pro
 
 This implementation passes the [Promises/A+ Compliance Test Suite](https://github.com/promises-aplus/promises-tests).
 
+## Installation
+
+<pre><code>
+npm install pangako
+</code></pre>
+
 ## Usage
 
 This example will create a deferred object which contains a promise and two
