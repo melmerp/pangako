@@ -12,6 +12,8 @@ timeout is then set to resolve the promise after 10 seconds. `then` is called
 on the promise to set a callback which will execute when the promise is
 fulfilled.
 
+### Using pangako.defer
+
 <pre><code>
 const pangako = require('pangako');
 
@@ -24,8 +26,37 @@ setTimeout(function() {
 // waits for the promise to get resolved and then prints the value
 deferred.promise.then(function(value) {
   console.log(value);
-}
+});
 </code</pre>
 
+### Using pangako.promise
 
+<pre><code>
+const Promise = require('pangako').Promise;
 
+// construct a new Promise and does some work and resolves itself
+var promise = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    resolve("I'm now resolved!");
+  }, 10000);
+});
+
+promise.then(function(value) {
+  console.log(value);
+});
+</code></pre>
+
+## Testing - Running the compliance test suite
+
+To test the installation, run:
+
+Run:
+<pre><code>
+npm test
+</code></pre>
+
+Results should be:
+<pre><code>
+...
+  872 passing (13s)
+</code></pre>
