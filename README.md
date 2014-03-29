@@ -6,8 +6,7 @@ This implementation passes the [Promises/A+ Compliance Test Suite](https://githu
 
 ## Installation
 
-<pre><code>
-npm install pangako
+<pre><code>npm install pangako
 </code></pre>
 
 ## Usage
@@ -20,8 +19,7 @@ fulfilled.
 
 ### Using pangako.defer
 
-<pre><code>
-const pangako = require('pangako');
+<pre><code>const pangako = require('pangako');
 
 // create a deferred and set a timeout to resolve the deferred
 var deferred = pangako.defer();
@@ -37,8 +35,7 @@ deferred.promise.then(function(value) {
 
 ### Using pangako.Promise
 
-<pre><code>
-const Promise = require('pangako').Promise;
+<pre><code>const Promise = require('pangako').Promise;
 
 // construct a new Promise and does some work and resolves itself
 var promise = new Promise(function(resolve, reject) {
@@ -57,12 +54,10 @@ promise.then(function(value) {
 To test the installation, run:
 
 Run:
-<pre><code>
-npm test
+<pre><code>npm test
 </code></pre>
 
 Results should be:
-<pre><code>
-...
+<pre><code>...
   872 passing (13s)
 </code></pre>
