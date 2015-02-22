@@ -1,6 +1,7 @@
 /**
  * Created by Mark E. Pascual <melmerp@gmail.com> on 3/15/14.
  */
+/* jshint node:true, esnext:true */
 'use strict';
 
 const asap = require('asap');
@@ -162,18 +163,24 @@ function promiseResolutionProcedure(deferred, x) {
         let settled;
         try {
           then.call(x, function(value) {
-              if (settled) return;
+              if (settled) {
+                return;
+              }
               settled = true;
               promiseResolutionProcedure(deferred, value);
             },
             function(reason) {
-              if (settled) return;
+              if (settled) {
+                return;
+              }
               settled = true;
               deferred.reject(reason);
             });
         }
         catch (err) {
-          if (settled) return;
+          if (settled) {
+            return;
+          }
           deferred.reject(err);
         }
       }
