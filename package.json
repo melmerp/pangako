@@ -1,6 +1,6 @@
 {
   "name": "pangako",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A bare bones Javascript Promises/A+ implementation.",
   "main": "pangako.js",
   "scripts": {
@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/melmerp/pangako",
   "dependencies": {
-    "asap": "~1.0.0"
+    "asap": "2.0.1"
   },
   "devDependencies": {
-    "promises-aplus-tests": "~2.0.4"
+    "promises-aplus-tests": "2.1.0"
   }
 }

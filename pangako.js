@@ -45,18 +45,13 @@ function Promise(work) {
   // Array of deferreds to callback when the promise settles.
   this.subscribers = [];
 
-  let self = this;
-  let resolve = function(value) {
-    resolvePromise(self, value);
-  };
-  let reject = function(reason) {
-    rejectPromise(self, reason);
-  };
-  work(resolve, reject);
+  work(settlePromise.bind(null, this, PromiseState.FULFILLED),
+      settlePromise.bind(null, this, PromiseState.REJECTED));
 }
 
 Promise.prototype = {
-  constructor: Promise,
+  // Why do this?
+  // constructor: Promise,
 
   /**
    * Registers callbacks that will get called when a promise is settled.
@@ -98,9 +93,7 @@ Promise.prototype = {
       // create a deferred to handle the results of the callback
       let deferred = defer();
       let valueOrReason = this.valueOrReason;
-      asap(function() {
-        doPromiseCallback(deferred, callback, valueOrReason);
-      });
+      asap(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
       return deferred.promise;
     }
 
@@ -109,30 +102,18 @@ Promise.prototype = {
   }
 };
 
-
-function resolvePromise(promise, value) {
-  settlePromise(promise, PromiseState.FULFILLED, value);
-}
-
-function rejectPromise(promise, reason) {
-  settlePromise(promise, PromiseState.REJECTED, reason);
-}
-
 function settlePromise(promise, state, valueOrReason) {
   if (promise.state === PromiseState.PENDING) {
     promise.state = state;
     promise.valueOrReason = valueOrReason;
 
     // If there are subscribers, then iterate through and perform callbacks.
-    if (promise.subscribers.length > 0) {
-      let subscriber;
-      while (subscriber = promise.subscribers.shift()) {
+    if (promise.subscribers.length) {
+      promise.subscribers.forEach(function(subscriber, index, subscribers) {
         let deferred = subscriber.deferred;
         let callback = (state === PromiseState.FULFILLED) ? subscriber.onFulfilled : subscriber.onRejected;
         if (callback && typeof(callback) === 'function') {
-          asap(function() {
-            doPromiseCallback(deferred, callback, valueOrReason);
-          });
+          asap(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
         }
         else {
           // These are just pass-throughs so just resolve or reject appropriately.
@@ -150,7 +131,7 @@ function settlePromise(promise, state, valueOrReason) {
             }
           });
         }
-      }
+      });
     }
   }
 }
@@ -180,12 +161,12 @@ function promiseResolutionProcedure(deferred, x) {
         // onFullfilled(...) or onRejected(...) being ignored
         let settled;
         try {
-          then.call(x, function onFulfilled(value) {
+          then.call(x, function(value) {
               if (settled) return;
               settled = true;
               promiseResolutionProcedure(deferred, value);
             },
-            function onRejected(reason) {
+            function(reason) {
               if (settled) return;
               settled = true;
               deferred.reject(reason);
