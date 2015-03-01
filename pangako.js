@@ -51,9 +51,6 @@ function Promise(work) {
 }
 
 Promise.prototype = {
-  // Why do this?
-  // constructor: Promise,
-
   /**
    * Registers callbacks that will get called when a promise is settled.
    * If the promise is resolved, the onFulfilled callback will get executed
@@ -189,6 +186,7 @@ function promiseResolutionProcedure(deferred, x) {
       }
     }
     else {
+      // not a function, just resolve with value
       deferred.resolve(x);
     }
   }
