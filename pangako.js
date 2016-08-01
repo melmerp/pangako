@@ -4,8 +4,6 @@
 /* jshint node:true, esnext:true */
 'use strict';
 
-const asap = require('asap');
-
 /**
  * Creates a deferred object which has three fields:
  * {
@@ -91,7 +89,7 @@ Promise.prototype = {
       // create a deferred to handle the results of the callback
       let deferred = defer();
       let valueOrReason = this.valueOrReason;
-      asap(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
+      setImmediate(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
       return deferred.promise;
     }
 
@@ -111,11 +109,11 @@ function settlePromise(promise, state, valueOrReason) {
         let deferred = subscriber.deferred;
         let callback = (state === PromiseState.FULFILLED) ? subscriber.onFulfilled : subscriber.onRejected;
         if (callback && typeof(callback) === 'function') {
-          asap(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
+          setImmediate(doPromiseCallback.bind(null, deferred, callback, valueOrReason));
         }
         else {
           // These are just pass-throughs so just resolve or reject appropriately.
-          asap(function() {
+          setImmediate(function() {
             try {
               if (state === PromiseState.FULFILLED) {
                 deferred.resolve(valueOrReason);
