@@ -95,6 +95,10 @@ Promise.prototype = {
 
     // The callback isn't a function, so just pass-through.
     return this;
+  },
+
+  catch: function(onRejected) {
+    return this.then(null, onRejected);
   }
 };
 
@@ -157,7 +161,8 @@ function promiseResolutionProcedure(deferred, x) {
         // onFullfilled(...) or onRejected(...) being ignored
         let settled;
         try {
-          then.call(x, function(value) {
+          then.call(x,
+            function(value) {
               if (settled) {
                 return;
               }
